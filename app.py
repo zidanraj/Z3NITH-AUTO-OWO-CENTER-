@@ -31,7 +31,6 @@ def load_data():
         try:
             with open(DATA_FILE, 'r') as f:
                 data = json.load(f)
-                # Ensure all keys exist to prevent KeyError crashes
                 for key in default_data:
                     if key not in data:
                         data[key] = default_data[key]
@@ -52,7 +51,7 @@ def save_data(data):
 if not os.path.exists(DATA_FILE):
     save_data(load_data())
 
-# Background Automation Worker with Safe Error Catching
+# Background Automation Worker
 def background_worker():
     last_sell_time = time.time()
     while True:
@@ -92,24 +91,26 @@ threading.Thread(target=background_worker, daemon=True).start()
 @app.route('/')
 def index():
     try:
-        if not session.get('logged_in'):
-            return render_template('index.html', page='login')
         db = load_data()
+        if not session.get('logged_in'):
+            return render_template('index.html', page='login', data=db)
         return render_template('index.html', page='dashboard', data=db)
     except Exception as e:
-        return f"Dashboard Error: {e}. Please refresh.", 500
+        return f"Dashboard Error: {e}", 500
 
 @app.route('/login', methods=['POST'])
 def login():
     try:
         username = request.form.get('username')
         password = request.form.get('password')
+        db = load_data()
         if username == 'flashy' and password == 'zidan2919k':
             session['logged_in'] = True
             return redirect(url_for('index'))
-        return render_template('index.html', page='login', error="Invalid Username or Password!")
+        return render_template('index.html', page='login', data=db, error="Invalid Username or Password!")
     except Exception as e:
-        return render_template('index.html', page='login', error=f"Login Error: {e}")
+        db = load_data()
+        return render_template('index.html', page='login', data=db, error=f"Login Error: {e}")
 
 @app.route('/logout')
 def logout():
