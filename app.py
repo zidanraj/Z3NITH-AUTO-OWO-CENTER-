@@ -20,7 +20,7 @@ def load_data():
         "clients": {},
         "announcement": "Welcome to Z3NITH AUTO OWO CENTER - PRO v1. System is fully operational!",
         "global_settings": {
-            "sell_all_interval": 60,
+            "sell_all_interval": 60
         }
     }
 
@@ -31,7 +31,6 @@ def save_data(data):
     except Exception as e:
         print(f"Error saving JSON: {e}")
 
-# Ensure initial data file exists
 if not os.path.exists(DATA_FILE):
     save_data(load_data())
 
@@ -47,12 +46,13 @@ threading.Thread(target=background_owo_worker, daemon=True).start()
 @app.route('/')
 def index():
     try:
-        if 'user' in session:
-            if session['user'] == 'flashy':
+        user = session.get('user')
+        if user:
+            if user == 'flashy':
                 return redirect(url_for('owner_dashboard'))
             else:
                 return redirect(url_for('client_dashboard'))
-        return render_template('index.html')
+        return render_template('index.html', session_user=None)
     except Exception as e:
         return f"App Error: {e}", 500
 
@@ -72,7 +72,7 @@ def login():
             session['user'] = username
             return redirect(url_for('client_dashboard'))
             
-    return render_template('index.html', error="Invalid Username or Password!")
+    return render_template('index.html', error="Invalid Username or Password!", session_user=None)
 
 @app.route('/logout')
 def logout():
@@ -84,7 +84,7 @@ def owner_dashboard():
     if session.get('user') != 'flashy':
         return redirect(url_for('index'))
     db = load_data()
-    return render_template('index.html', role='owner', data=db)
+    return render_template('index.html', role='owner', data=db, session_user='flashy')
 
 @app.route('/client/dashboard')
 def client_dashboard():
@@ -93,7 +93,7 @@ def client_dashboard():
         return redirect(url_for('index'))
     db = load_data()
     client_info = db.get('clients', {}).get(user, {})
-    return render_template('index.html', role='client', username=user, client=client_info, data=db)
+    return render_template('index.html', role='client', username=user, client=client_info, data=db, session_user=user)
 
 @app.route('/api/owner/add_client', methods=['POST'])
 def add_client():
