@@ -82,7 +82,7 @@
             <p class="lang-content-hi" style="font-size: 0.85rem; color: #ccc;">1. अपने यूजरनेम (flashy) और पासवर्ड से लॉगिन करें।<br>2. सर्वर और चैनल आईडी सेट करें।<br>3. की मोड चुनें।<br>4. बॉट ऑटोमैटिक रन होगा।</p>
         </div>
         
-        {% if session.get('user') %}
+        {% if session_user %}
         <a href="/logout" class="btn" style="text-align: center; text-decoration: none; background: #ff4757; margin-top: auto;">Logout</a>
         {% endif %}
     </div>
@@ -90,7 +90,7 @@
     <div class="container">
         <div class="glass-card">
             
-            {% if not session.get('user') %}
+            {% if not session_user %}
             <h2 class="lang-content-en">Z3NITH OWO PANEL LOGIN</h2>
             <h2 class="lang-content-hi">ज़ेंनिथ ओवो पैनल लॉगिन</h2>
             
@@ -113,7 +113,7 @@
                 <button type="submit" class="btn lang-content-hi">पैनल में लॉगिन करें</button>
             </form>
             
-            {% elif session.get('user') == 'flashy' %}
+            {% elif role == 'owner' %}
             <h2>👑 Owner Master Dashboard</h2>
             <div class="announcement-box">
                 <strong>Announcement:</strong> {{ data.announcement }}
@@ -146,7 +146,7 @@
             <button class="btn" onclick="updateAnnouncement()">Update Announcement</button>
 
             {% else %}
-            <h2>⚡ Client Dashboard ({{ username })</h2>
+            <h2>⚡ Client Dashboard ({{ username }})</h2>
             <div class="announcement-box">
                 <strong>Notice from Owner:</strong> {{ data.announcement }}
             </div>
