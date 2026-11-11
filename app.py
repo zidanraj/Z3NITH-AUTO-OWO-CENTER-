@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import threading
 import time
-import random
-import requests
 import json
 import os
 
@@ -16,23 +14,27 @@ def load_data():
         try:
             with open(DATA_FILE, 'r') as f:
                 return json.load(f)
-        except:
-            pass
+        except Exception as e:
+            print(f"Error loading JSON: {e}")
     return {
         "clients": {},
         "announcement": "Welcome to Z3NITH AUTO OWO CENTER - PRO v1. System is fully operational!",
         "global_settings": {
-            "sell_all_interval": 60, # minutes
+            "sell_all_interval": 60,
         }
     }
 
 def save_data(data):
-    with open(DATA_FILE, 'w') as f:
-        json.dump(data, f, indent=4)
+    try:
+        with open(DATA_FILE, 'w') as f:
+            json.dump(data, f, indent=4)
+    except Exception as e:
+        print(f"Error saving JSON: {e}")
 
-data_store = load_data()
+# Ensure initial data file exists
+if not os.path.exists(DATA_FILE):
+    save_data(load_data())
 
-# Background Bot Simulation Engine
 def background_owo_worker():
     while True:
         try:
@@ -44,12 +46,15 @@ threading.Thread(target=background_owo_worker, daemon=True).start()
 
 @app.route('/')
 def index():
-    if 'user' in session:
-        if session['user'] == 'flashy':
-            return redirect(url_for('owner_dashboard'))
-        else:
-            return redirect(url_for('client_dashboard'))
-    return render_template('index.html')
+    try:
+        if 'user' in session:
+            if session['user'] == 'flashy':
+                return redirect(url_for('owner_dashboard'))
+            else:
+                return redirect(url_for('client_dashboard'))
+        return render_template('index.html')
+    except Exception as e:
+        return f"App Error: {e}", 500
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -61,9 +66,9 @@ def login():
         return redirect(url_for('owner_dashboard'))
     
     db = load_data()
-    if username in db['clients']:
+    if username in db.get('clients', {}):
         client = db['clients'][username]
-        if client['password'] == password and client.get('active', True):
+        if client.get('password') == password and client.get('active', True):
             session['user'] = username
             return redirect(url_for('client_dashboard'))
             
@@ -87,17 +92,20 @@ def client_dashboard():
     if not user or user == 'flashy':
         return redirect(url_for('index'))
     db = load_data()
-    client_info = db['clients'].get(user, {})
+    client_info = db.get('clients', {}).get(user, {})
     return render_template('index.html', role='client', username=user, client=client_info, data=db)
 
 @app.route('/api/owner/add_client', methods=['POST'])
 def add_client():
     if session.get('user') != 'flashy':
         return jsonify({"success": False, "error": "Unauthorized"})
-    req = request.json
+    req = request.json or {}
     username = req.get('username')
     password = req.get('password')
     
+    if not username or not password:
+        return jsonify({"success": False, "error": "Missing fields"})
+        
     db = load_data()
     db['clients'][username] = {
         "password": password,
@@ -140,7 +148,7 @@ def delete_client(username):
 def update_announcement():
     if session.get('user') != 'flashy':
         return jsonify({"success": False})
-    msg = request.json.get('announcement')
+    msg = request.json.get('announcement', '')
     db = load_data()
     db['announcement'] = msg
     save_data(db)
@@ -151,7 +159,7 @@ def update_settings():
     user = session.get('user')
     if not user:
         return jsonify({"success": False})
-    req = request.json
+    req = request.json or {}
     db = load_data()
     
     if user == 'flashy':
@@ -169,9 +177,6 @@ def update_settings():
     return jsonify({"success": True})
 
 if __name__ == '__main__':
-    print("==================================================")
-    print("🚀 Z3NITH AUTO OWO CENTER - PRO v1 STARTED SUCCESSFULLY")
-    print("⚡ Developed by: dev_flashy")
-    print("==================================================")
-    app.run(host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
     
