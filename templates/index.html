@@ -3,247 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Z3NITH AUTO OWO CENTER - Advanced Command Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Z3NITH AUTO OWO CENTER - PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        .glass-card { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .neon-glow { box-shadow: 0 0 25px -5px rgba(99, 102, 241, 0.3); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        body { background: radial-gradient(circle at center, #1a1c29 0%, #0d0e15 100%); color: #fff; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-weight: 700; font-size: 1.2rem; background: linear-gradient(45deg, #00dbde, #fc00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .menu-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 8px; cursor: pointer; color: #fff; font-size: 1.2rem; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .menu-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        
+        .drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: rgba(13, 14, 21, 0.95); backdrop-filter: blur(20px); border-left: 1px solid rgba(255,255,255,0.1); z-index: 2000; transition: 0.4s cubic-bezier(0.77,0,0.175,1); padding: 25px; display: flex; flex-direction: column; gap: 20px; box-shadow: -10px 0 30px rgba(0,0,0,0.8); }
+        .drawer.open { right: 0; }
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+        .close-btn { background: none; border: none; color: #ff4757; font-size: 1.5rem; cursor: pointer; }
+        
+        .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .glass-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); border-radius: 20px; padding: 30px; width: 100%; max-width: 500px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); transform-style: preserve-3d; transition: 0.3s; }
+        
+        h2 { margin-bottom: 20px; font-weight: 600; text-align: center; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 0.85rem; margin-bottom: 5px; color: #aaa; }
+        input, select, textarea { width: 100%; padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s; }
+        input:focus { border-color: #00dbde; box-shadow: 0 0 10px rgba(0, 219, 222, 0.3); }
+        
+        .btn { width: 100%; padding: 12px; border-radius: 10px; border: none; background: linear-gradient(45deg, #00dbde, #fc00ff); color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,219,222,0.4); margin-top: 10px; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        
+        .announcement-box { background: rgba(252, 0, 255, 0.1); border-left: 4px solid #fc00ff; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .stat-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+        .stat-box h3 { font-size: 1.2rem; color: #00dbde; }
+        .stat-box p { font-size: 0.8rem; color: #aaa; }
+        
+        .error { color: #ff4757; text-align: center; margin-bottom: 15px; font-size: 0.9rem; }
+        .lang-content-hi { display: none; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-indigo-500 selection:text-white">
+<body>
 
-    <!-- Admin Password Gate Modal -->
-    <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-xl transition-all duration-300">
-        <div class="glass-card p-8 rounded-2xl w-full max-w-md mx-4 neon-glow border border-indigo-500/20">
-            <div class="text-center mb-6">
-                <div class="inline-flex p-3 rounded-2xl bg-indigo-600/20 text-indigo-400 mb-3 border border-indigo-500/30">
-                    <i class="fa-solid fa-shield-halved text-2xl"></i>
+    <nav>
+        <div class="logo">⚡ Z3NITH OWO PRO</div>
+        <button class="menu-btn" onclick="toggleDrawer()">☰</button>
+    </nav>
+
+    <div id="sideDrawer" class="drawer">
+        <div class="drawer-header">
+            <h3>Menu</h3>
+            <button class="close-btn" onclick="toggleDrawer()">✕</button>
+        </div>
+        
+        <div class="input-group">
+            <label>Language / भाषा</label>
+            <select onchange="switchLang(this.value)">
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+            </select>
+        </div>
+        
+        <hr style="border-color: rgba(255,255,255,0.1);">
+        
+        <div>
+            <h4 style="color: #00dbde; margin-bottom: 8px;">Version</h4>
+            <p style="font-size: 0.9rem;">v1.0.0 PRO Stable</p>
+        </div>
+        
+        <div>
+            <h4 style="color: #00dbde; margin-bottom: 8px;">Developer</h4>
+            <p style="font-size: 0.9rem;">dev_flashy</p>
+        </div>
+        
+        <div>
+            <h4 style="color: #00dbde; margin-bottom: 8px;">Tutorial / ट्यूटोरियल</h4>
+            <p class="lang-content-en" style="font-size: 0.85rem; color: #ccc;">1. Login with username (flashy) & password.<br>2. Set Server & Channel IDs.<br>3. Choose Key mode.<br>4. Auto-bot runs with anti-overlap safety.</p>
+            <p class="lang-content-hi" style="font-size: 0.85rem; color: #ccc;">1. अपने यूजरनेम (flashy) और पासवर्ड से लॉगिन करें।<br>2. सर्वर और चैनल आईडी सेट करें।<br>3. की मोड चुनें।<br>4. बॉट ऑटोमैटिक रन होगा।</p>
+        </div>
+        
+        {% if session.get('user') %}
+        <a href="/logout" class="btn" style="text-align: center; text-decoration: none; background: #ff4757; margin-top: auto;">Logout</a>
+        {% endif %}
+    </div>
+
+    <div class="container">
+        <div class="glass-card">
+            
+            {% if not session.get('user') %}
+            <h2 class="lang-content-en">Z3NITH OWO PANEL LOGIN</h2>
+            <h2 class="lang-content-hi">ज़ेंनिथ ओवो पैनल लॉगिन</h2>
+            
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% endif %}
+            
+            <form action="/login" method="POST">
+                <div class="input-group">
+                    <label class="lang-content-en">Username</label>
+                    <label class="lang-content-hi">यूजरनेम</label>
+                    <input type="text" name="username" required placeholder="Enter username">
                 </div>
-                <h2 class="text-2xl font-bold tracking-tight text-white">Admin Authentication</h2>
-                <p class="text-xs text-slate-400 mt-1">Enter master password to access Z3NITH Command Center</p>
-            </div>
-            <form onsubmit="verifyAdmin(event)" class="space-y-4">
-                <div>
-                    <input type="password" id="admin-password" placeholder="Enter password..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-indigo-500 text-center tracking-widest font-mono">
+                <div class="input-group">
+                    <label class="lang-content-en">Password</label>
+                    <label class="lang-content-hi">पासवर्ड</label>
+                    <input type="password" name="password" required placeholder="Enter password">
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-indigo-600/30 text-sm">
-                    Authorize Access
-                </button>
+                <button type="submit" class="btn lang-content-en">Login to Panel</button>
+                <button type="submit" class="btn lang-content-hi">पैनल में लॉगिन करें</button>
             </form>
-            <p id="auth-error" class="text-rose-400 text-xs text-center mt-3 hidden">Incorrect master password. Access denied.</p>
+            
+            {% elif session.get('user') == 'flashy' %}
+            <h2>👑 Owner Master Dashboard</h2>
+            <div class="announcement-box">
+                <strong>Announcement:</strong> {{ data.announcement }}
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h3>{{ data.clients|length }}</h3>
+                    <p>Total Clients</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Active</h3>
+                    <p>System Status</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 15px; font-size: 1rem; color: #00dbde;">Add New Client</h3>
+            <div class="input-group" style="margin-top: 10px;">
+                <input type="text" id="newClientUser" placeholder="Client Username">
+            </div>
+            <div class="input-group">
+                <input type="text" id="newClientPass" placeholder="Client Password">
+            </div>
+            <button class="btn" onclick="addClient()">Create Client Account</button>
+
+            <h3 style="margin-top: 20px; font-size: 1rem; color: #00dbde;">Broadcast Announcement</h3>
+            <div class="input-group" style="margin-top: 10px;">
+                <textarea id="announcementText" rows="2">{{ data.announcement }}</textarea>
+            </div>
+            <button class="btn" onclick="updateAnnouncement()">Update Announcement</button>
+
+            {% else %}
+            <h2>⚡ Client Dashboard ({{ username })</h2>
+            <div class="announcement-box">
+                <strong>Notice from Owner:</strong> {{ data.announcement }}
+            </div>
+            
+            <div class="input-group">
+                <label>Key Mode (Owner Key / Client Key / Manually)</label>
+                <select id="keyMode" onchange="saveSettings()">
+                    <option value="manually" {% if client.mode == 'manually' %}selected{% endif %}>Manually</option>
+                    <option value="owner_key" {% if client.mode == 'owner_key' %}selected{% endif %}>Owner Key (Activated)</option>
+                    <option value="client_key" {% if client.mode == 'client_key' %}selected{% endif %}>Client Key (Private)</option>
+                </select>
+                <small style="color: #888; font-size: 0.75rem;">*Owner key is managed by owner. No one can see your private client key.</small>
+            </div>
+
+            <div class="input-group">
+                <label>Server ID</label>
+                <input type="text" id="serverId" value="{{ client.server_id }}" placeholder="Enter Server ID">
+            </div>
+
+            <div class="input-group">
+                <label>OwO Channel ID</label>
+                <input type="text" id="owoChannelId" value="{{ client.owo_channel_id }}" placeholder="Enter Channel ID">
+            </div>
+
+            <div class="input-group">
+                <label>Give Owner UID & Amount</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="giveOwnerUid" value="{{ client.give_owner_uid }}" placeholder="Owner UID">
+                    <input type="number" id="amount" value="{{ client.amount }}" placeholder="Amount">
+                </div>
+            </div>
+
+            <button class="btn" onclick="saveSettings()">Save & Apply Settings</button>
+            {% endif %}
+
         </div>
     </div>
 
-    <!-- Main Dashboard Container -->
-    <div id="dashboard-app" class="opacity-0 pointer-events-none transition-opacity duration-500">
-        <header class="glass-card sticky top-0 z-40 border-b border-slate-800/80 px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div class="bg-gradient-to-tr from-indigo-600 to-purple-600 p-2.5 rounded-xl text-white font-bold shadow-lg shadow-indigo-500/20">
-                    <i class="fa-solid fa-terminal"></i>
-                </div>
-                <div>
-                    <h1 class="text-lg font-extrabold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">Z3NITH AUTO OWO CENTER</h1>
-                    <p class="text-[11px] text-slate-400">Advanced Multi-Token Farming Suite & Auto-Filter Engine</p>
-                </div>
-            </div>
-            <div class="flex items-center space-x-4">
-                <span class="flex items-center text-emerald-400 text-xs bg-emerald-950/60 px-3 py-1.5 rounded-full border border-emerald-800/50">
-                    <span class="w-2 h-2 bg-emerald-400 rounded-full animate-ping mr-2"></span> Secure Gateway Active
-                </span>
-                <button onclick="lockAdmin()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-300 transition flex items-center">
-                    <i class="fa-solid fa-lock mr-1.5 text-indigo-400"></i> Lock Panel
-                </button>
-            </div>
-        </header>
-
-        <main class="p-6 max-w-7xl mx-auto space-y-6">
-            <!-- Metrics Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="glass-card p-5 rounded-2xl relative overflow-hidden group">
-                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider">Total Loaded Tokens</p>
-                    <h3 class="text-3xl font-extrabold mt-2 text-white" id="stat-total">0</h3>
-                </div>
-                <div class="glass-card p-5 rounded-2xl relative overflow-hidden group">
-                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider">Valid / Active</p>
-                    <h3 class="text-3xl font-extrabold mt-2 text-emerald-400" id="stat-valid">0</h3>
-                </div>
-                <div class="glass-card p-5 rounded-2xl relative overflow-hidden group">
-                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider">Invalid / Banned</p>
-                    <h3 class="text-3xl font-extrabold mt-2 text-rose-400" id="stat-invalid">0</h3>
-                </div>
-                <div class="glass-card p-5 rounded-2xl relative overflow-hidden group">
-                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider">Captchas Bypassed</p>
-                    <h3 class="text-3xl font-extrabold mt-2 text-amber-400" id="stat-captchas">0</h3>
-                </div>
-            </div>
-
-            <!-- Token Input & Mode Selector -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="glass-card p-6 rounded-2xl space-y-4 lg:col-span-2">
-                    <h2 class="font-bold text-base flex items-center text-indigo-300">
-                        <i class="fa-solid fa-file-import mr-2"></i> Token Source Manager (TXT / Manual)
-                    </h2>
-                    <p class="text-xs text-slate-400">Paste tokens line-by-line or load your tokens.txt file.</p>
-                    
-                    <div class="space-y-3">
-                        <textarea id="tokens-input" rows="5" placeholder="Paste Discord tokens here (one per line)..." class="w-full bg-slate-900 border border-slate-800 rounded-xl p-4 text-xs font-mono focus:outline-none focus:border-indigo-500 text-slate-200 resize-none"></textarea>
-                        
-                        <div class="flex flex-wrap items-center justify-between gap-3">
-                            <div class="flex items-center space-x-2">
-                                <label class="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition flex items-center">
-                                    <i class="fa-solid fa-folder-open mr-2 text-indigo-400"></i> Load tokens.txt
-                                    <input type="file" id="file-selector" accept=".txt" class="hidden" onchange="handleFileSelect(event)">
-                                </label>
-                                <button onclick="saveTokensToBackend()" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-xl text-xs font-semibold transition shadow-lg shadow-indigo-600/20">
-                                    Sync Tokens
-                                </button>
-                            </div>
-                            <span id="sync-status" class="text-xs text-slate-400 font-mono"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-card p-6 rounded-2xl space-y-4">
-                    <h2 class="font-bold text-base flex items-center text-purple-300">
-                        <i class="fa-solid fa-sliders mr-2"></i> Captcha Protection Mode
-                    </h2>
-                    <p class="text-xs text-slate-400">Choose bot reaction on verification prompt.</p>
-
-                    <div class="space-y-3 pt-2">
-                        <label class="flex items-start space-x-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800 cursor-pointer hover:border-indigo-500/50 transition">
-                            <input type="radio" name="captcha_mode" value="with_key" checked class="mt-1 text-indigo-600">
-                            <div>
-                                <span class="text-xs font-bold text-white block">With Cap Key (Auto-Solve)</span>
-                                <span class="text-[11px] text-slate-400 block">Routes captchas to 2Captcha API.</span>
-                            </div>
-                        </label>
-
-                        <label class="flex items-start space-x-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800 cursor-pointer hover:border-indigo-500/50 transition">
-                            <input type="radio" name="captcha_mode" value="without_key" class="mt-1 text-indigo-600">
-                            <div>
-                                <span class="text-xs font-bold text-white block">Without Key (Auto-Stop)</span>
-                                <span class="text-[11px] text-slate-400 block">Pauses account execution on verify prompt.</span>
-                            </div>
-                        </label>
-
-                        <div class="pt-1">
-                            <input type="password" id="cap-key-input" placeholder="Enter 2Captcha API Key..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-indigo-500 text-slate-200 font-mono">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Token Table -->
-            <div class="glass-card rounded-2xl overflow-hidden shadow-xl">
-                <div class="px-6 py-4 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
-                    <h2 class="font-bold text-sm text-white flex items-center">
-                        <i class="fa-solid fa-network-wired mr-2 text-emerald-400"></i> Active Token Registry & Auto-Sorter
-                    </h2>
-                    <div class="flex items-center space-x-3">
-                        <button onclick="startFarmingEngine()" class="bg-emerald-600 hover:bg-emerald-500 px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center"><i class="fa-solid fa-play mr-2"></i> Start Farm</button>
-                        <button onclick="stopFarmingEngine()" class="bg-rose-600 hover:bg-rose-500 px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center"><i class="fa-solid fa-stop mr-2"></i> Stop Farm</button>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-slate-950/60 text-slate-400 text-[11px] uppercase tracking-wider border-b border-slate-800">
-                                <th class="px-6 py-3.5">Token Mask</th>
-                                <th class="px-6 py-3.5">Status Filter</th>
-                                <th class="px-6 py-3.5">Current Task</th>
-                                <th class="px-6 py-3.5">OwO Balance</th>
-                                <th class="px-6 py-3.5 text-right">File Output</th>
-                            </tr>
-                        </thead>
-                        <tbody id="token-table-body" class="divide-y divide-slate-800/60 text-xs">
-                            <tr><td colspan="5" class="px-6 py-8 text-center text-slate-500 font-mono">No tokens loaded yet.</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Terminal -->
-            <div class="glass-card rounded-2xl p-6 shadow-xl">
-                <div class="flex justify-between items-center mb-3">
-                    <h2 class="font-bold text-xs text-slate-400 uppercase tracking-wider"><i class="fa-solid fa-terminal mr-2 text-indigo-400"></i> Live Console</h2>
-                    <button onclick="clearTerminal()" class="text-xs text-slate-500 hover:text-slate-300">Clear</button>
-                </div>
-                <div id="terminal-console" class="bg-slate-950 font-mono text-[11px] text-emerald-400 p-4 rounded-xl h-48 overflow-y-auto space-y-1.5 border border-slate-900">
-                    <div>[02:47:00] [Z3NITH Core] Panel ready. Enter master password to proceed.</div>
-                </div>
-            </div>
-        </main>
-    </div>
-
     <script>
-        function verifyAdmin(e) {
-            e.preventDefault();
-            if (document.getElementById('admin-password').value === 'zidan2919k') {
-                document.getElementById('auth-modal').classList.add('opacity-0', 'pointer-events-none');
-                document.getElementById('dashboard-app').classList.remove('opacity-0', 'pointer-events-none');
+        function toggleDrawer() {
+            document.getElementById('sideDrawer').classList.toggle('open');
+        }
+
+        function switchLang(lang) {
+            if(lang === 'hi') {
+                document.querySelectorAll('.lang-content-en').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.lang-content-hi').forEach(el => el.style.display = 'block');
             } else {
-                document.getElementById('auth-error').classList.remove('hidden');
+                document.querySelectorAll('.lang-content-hi').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.lang-content-en').forEach(el => el.style.display = 'block');
             }
         }
-        function lockAdmin() {
-            document.getElementById('auth-modal').classList.remove('opacity-0', 'pointer-events-none');
-            document.getElementById('dashboard-app').classList.add('opacity-0', 'pointer-events-none');
-            document.getElementById('admin-password').value = '';
-        }
-        function handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const r = new FileReader();
-            r.onload = function(evt) {
-                document.getElementById('tokens-input').value = evt.target.result;
-                saveTokensToBackend();
-            };
-            r.readAsText(file);
-        }
-        function saveTokensToBackend() {
-            const raw = document.getElementById('tokens-input').value.trim();
-            if (!raw) return alert('Paste tokens first.');
-            const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 10);
-            fetch('/api/tokens/sync', {
+
+        function addClient() {
+            let u = document.getElementById('newClientUser').value;
+            let p = document.getElementById('newClientPass').value;
+            if(!u || !p) { alert('Fill all fields'); return; }
+            fetch('/api/owner/add_client', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tokens: lines })
-            })
-            .then(res => res.json())
-            .then(data => {
-                updateStats(data.stats);
-                renderTable(data.tokens);
-                document.getElementById('sync-status').innerText = `Synced ${data.tokens.length} tokens!`;
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username: u, password: p})
+            }).then(res => res.json()).then(data => {
+                if(data.success) location.reload();
+                else alert('Error creating client');
             });
         }
-        function updateStats(st) {
-            document.getElementById('stat-total').innerText = st.total;
-            document.getElementById('stat-valid').innerText = st.valid;
-            document.getElementById('stat-invalid').innerText = st.invalid;
-            document.getElementById('stat-captchas').innerText = st.captchas_solved;
-        }
-        function renderTable(tokens) {
-            const tbody = document.getElementById('token-table-body');
-            tbody.innerHTML = '';
-            tokens.forEach(t => {
-                const badge = t.status === 'Valid' ? '<span class="text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">VALID</span>' : '<span class="text-rose-400 bg-rose-950 px-2 py-0.5 rounded border border-rose-800">INVALID</span>';
-                tbody.innerHTML += `<tr class="hover:bg-slate-900/50"><td class="px-6 py-3 font-mono text-slate-300">${t.masked}</td><td class="px-6 py-3">${badge}</td><td class="px-6 py-3 text-slate-400 font-mono">${t.task}</td><td class="px-6 py-3 font-bold text-emerald-400">${t.balance}</td><td class="px-6 py-3 text-right font-mono text-indigo-300">${t.output_file}</td></tr>`;
+
+        function updateAnnouncement() {
+            let txt = document.getElementById('announcementText').value;
+            fetch('/api/owner/update_announcement', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({announcement: txt})
+            }).then(res => res.json()).then(data => {
+                if(data.success) alert('Announcement updated successfully!');
             });
         }
-        function startFarmingEngine() {
-            const mode = document.querySelector('input[name="captcha_mode"]:checked').value;
-            fetch('/api/farm/start', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({mode}) }).then(res => res.json()).then(d => alert(d.message));
-        }
-        function stopFarmingEngine() {
-            fetch('/api/farm/stop', { method: 'POST' }).then(res => res.json()).then(d => alert(d.message));
-        }
-        function clearTerminal() {
-            document.getElementById('terminal-console').innerHTML = '<div>[System] Cleared.</div>';
+
+        function saveSettings() {
+            let settings = {
+                mode: document.getElementById('keyMode') ? document.getElementById('keyMode').value : 'manually',
+                server_id: document.getElementById('serverId') ? document.getElementById('serverId').value : '',
+                owo_channel_id: document.getElementById('owoChannelId') ? document.getElementById('owoChannelId').value : '',
+                give_owner_uid: document.getElementById('giveOwnerUid') ? document.getElementById('giveOwnerUid').value : '',
+                amount: document.getElementById('amount') ? parseInt(document.getElementById('amount').value || 0) : 0
+            };
+            fetch('/api/update_settings', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({settings: settings})
+            }).then(res => res.json()).then(data => {
+                if(data.success) alert('Settings saved & synced successfully!');
+            });
         }
     </script>
 </body>
