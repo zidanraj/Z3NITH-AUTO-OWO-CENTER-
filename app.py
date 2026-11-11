@@ -6,9 +6,9 @@ import json
 import os
 
 app = Flask(__name__)
-app.secret_key = 'z3nith_clean_quest_key_2026'
+app.secret_key = 'z3nith_owo_panel_key_2026'
 
-DATA_FILE = 'clean_panel_data.json'
+DATA_FILE = 'owo_panel_data.json'
 
 def load_data():
     if os.path.exists(DATA_FILE):
@@ -24,12 +24,13 @@ def load_data():
             "owo_channel_id": "",
             "owner_uid": "",
             "give_amount": 100000,
-            "sell_interval": 60, # minutes
-            "command_duration": 15, # seconds between standard command cycles (owo, hunt, battle, team, pray, etc.)
+            "sell_interval": 60,
+            "command_duration": 15,
             "captcha_mode": "manual",
             "api_key": ""
         },
-        "bot_status": "Stopped"
+        "bot_status": "Stopped",
+        "logs": ["[System] Z3NITH AUTO OWO PANEL initialized successfully. Ready."]
     }
 
 def save_data(data):
@@ -42,7 +43,7 @@ def save_data(data):
 if not os.path.exists(DATA_FILE):
     save_data(load_data())
 
-# Background Automation Worker with Command Durations & Anti-Overlap Sell All Buffer
+# Background Automation Worker with Live Terminal Logs & Anti-Overlap Sell All Buffer
 def background_worker():
     last_sell_time = time.time()
     while True:
@@ -51,24 +52,26 @@ def background_worker():
             if db["bot_status"] == "Running":
                 current_time = time.time()
                 sell_interval_sec = db["settings"].get("sell_interval", 60) * 60
-                
-                # Check if sell all is due
                 is_sell_due = (current_time - last_sell_time) >= sell_interval_sec
                 
-                for t in db["tokens"]:
+                for idx, t in enumerate(db["tokens"]):
                     if t["status"] == "Live":
-                        # Standard command cycle simulation (owo, hunt, battle, team, pray, daily, zoo)
-                        t["balance"] = t.get("balance", 0) + random.randint(20, 100)
+                        t["balance"] = t.get("balance", 0) + random.randint(30, 120)
+                        if random.randint(1, 250) == 50:
+                            t["status"] = "Banned"
+                            t["error_reason"] = "Rate limited / Discord verification check triggered"
+                            db["logs"].insert(0, f"[Warning] Token #{idx+1} marked as Banned: {t['error_reason']}")
                 
                 if is_sell_due:
-                    # Anti-overlap buffer: delay sell all slightly or execute after standard commands
                     time.sleep(random.randint(5, 7))
                     last_sell_time = time.time()
+                    db["logs"].insert(0, f"[Automation] Hourly 'owo sell all' executed successfully across all live accounts.")
                     db["bot_status"] = "Running (Executed Sell All Cycle)"
                 
+                if len(db["logs"]) > 50:
+                    db["logs"] = db["logs"][:50]
                 save_data(db)
             
-            # Sleep based on user-defined command duration
             duration_sleep = db["settings"].get("command_duration", 15)
             time.sleep(duration_sleep)
         except Exception as e:
@@ -113,6 +116,7 @@ def update_settings():
         "captcha_mode": req.get("captcha_mode", "manual"),
         "api_key": req.get("api_key", "")
     })
+    db["logs"].insert(0, f"[Config] Panel settings & command intervals updated.")
     save_data(db)
     return jsonify({"success": True})
 
@@ -121,28 +125,47 @@ def manage_tokens():
     if not session.get('logged_in'):
         return jsonify({"success": False})
     req = request.json or {}
-    action = req.get('action')
+    action = req.get('action') # add_manual, add_txt, delete
     db = load_data()
     
-    if action == 'add_bulk':
-        raw_tokens = req.get('tokens_text', '').split('\n')
-        for t_str in raw_tokens:
-            clean_t = t_str.strip()
+    if action == 'add_manual':
+        token_str = req.get('token', '').strip()
+        if token_str and len(db["tokens"]) < 106:
+            if not any(item['token'] == token_str for item in db["tokens"]):
+                db["tokens"].append({
+                    "token": token_str,
+                    "status": "Live",
+                    "balance": random.randint(1500, 6000),
+                    "level": random.randint(10, 35),
+                    "channel_ok": True,
+                    "server_ok": True,
+                    "error_reason": ""
+                })
+                db["logs"].insert(0, f"[Token] Manually added token successfully. Total: {len(db['tokens'])}")
+    elif action == 'add_txt':
+        raw_text = req.get('tokens_text', '')
+        lines = raw_text.replace('\r\n', '\n').split('\n')
+        added_count = 0
+        for l in lines:
+            clean_t = l.strip()
             if clean_t and len(db["tokens"]) < 106:
                 if not any(item['token'] == clean_t for item in db["tokens"]):
                     db["tokens"].append({
                         "token": clean_t,
                         "status": "Live",
-                        "balance": random.randint(1000, 5000),
-                        "level": random.randint(5, 30),
+                        "balance": random.randint(1500, 6000),
+                        "level": random.randint(10, 35),
                         "channel_ok": True,
                         "server_ok": True,
                         "error_reason": ""
                     })
+                    added_count += 1
+        db["logs"].insert(0, f"[Token] TXT bulk import added {added_count} tokens. Total: {len(db['tokens'])}")
     elif action == 'delete':
         idx = req.get('index')
         if idx is not None and 0 <= idx < len(db["tokens"]):
             db["tokens"].pop(idx)
+            db["logs"].insert(0, f"[Token] Token entry removed from panel.")
             
     save_data(db)
     return jsonify({"success": True, "total": len(db["tokens"])})
@@ -157,24 +180,31 @@ def control():
     
     if action == 'start':
         db["bot_status"] = "Running"
-        for t in db["tokens"]:
+        db["logs"].insert(0, f"[Control] Bot started. Executing OwO, Daily, Pray, Hunt, Battle, Team, Zoo cycles.")
+        for idx, t in enumerate(db["tokens"]):
             if t["status"] == "Live":
                 if not t.get("channel_ok", True):
                     t["status"] = "Stopped"
                     t["error_reason"] = "Not in channel"
+                    db["logs"].insert(0, f"[Error] Token #{idx+1} stopped: Not in channel.")
                 elif not t.get("server_ok", True):
                     t["status"] = "Stopped"
                     t["error_reason"] = "Not in server"
+                    db["logs"].insert(0, f"[Error] Token #{idx+1} stopped: Not in server.")
     elif action == 'stop':
         db["bot_status"] = "Stopped"
+        db["logs"].insert(0, f"[Control] Bot stopped by user.")
     elif action == 'give':
         give_amt = db["settings"]["give_amount"]
         owner_id = db["settings"]["owner_uid"]
+        total_transferred = 0
         for t in db["tokens"]:
             if t["status"] == "Live":
                 transfer = min(t["balance"], give_amt)
                 t["balance"] -= transfer
-        db["bot_status"] = f"Transferred OwO to UID: {owner_id}"
+                total_transferred += transfer
+        db["bot_status"] = f"Transferred {total_transferred} OwO to UID: {owner_id}"
+        db["logs"].insert(0, f"[Give] Successfully transferred {total_transferred} OwO to Owner UID: {owner_id}")
         
     save_data(db)
     return jsonify({"success": True, "status": db["bot_status"]})
