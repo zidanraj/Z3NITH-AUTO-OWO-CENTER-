@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Z3NITH AUTO OWO CENTER - PRO</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
         body { background: radial-gradient(circle at center, #1a1c29 0%, #0d0e15 100%); color: #fff; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
@@ -15,19 +16,19 @@
         .menu-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 8px; cursor: pointer; color: #fff; font-size: 1.2rem; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .menu-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
         
-        .drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: rgba(13, 14, 21, 0.95); backdrop-filter: blur(20px); border-left: 1px solid rgba(255,255,255,0.1); z-index: 2000; transition: 0.4s cubic-bezier(0.77,0,0.175,1); padding: 25px; display: flex; flex-direction: column; gap: 20px; box-shadow: -10px 0 30px rgba(0,0,0,0.8); }
+        .drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: rgba(13, 14, 21, 0.95); backdrop-filter: blur(20px); border-left: 1px solid rgba(255,255,255,0.1); z-index: 2000; transition: 0.4s cubic-bezier(0.77,0,0.175,1); padding: 25px; display: flex; flex-direction: column; gap: 20px; box-shadow: -10px 0 30px rgba(0,0,0,0.8); overflow-y: auto; }
         .drawer.open { right: 0; }
         .drawer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
         .close-btn { background: none; border: none; color: #ff4757; font-size: 1.5rem; cursor: pointer; }
         
         .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .glass-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); border-radius: 20px; padding: 30px; width: 100%; max-width: 500px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); transform-style: preserve-3d; transition: 0.3s; }
+        .glass-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); border-radius: 20px; padding: 30px; width: 100%; max-width: 550px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); transform-style: preserve-3d; transition: 0.3s; }
         
-        h2 { margin-bottom: 20px; font-weight: 600; text-align: center; }
+        h2 { margin-bottom: 20px; font-weight: 600; text-align: center; font-size: 1.4rem; }
         .input-group { margin-bottom: 15px; }
         label { display: block; font-size: 0.85rem; margin-bottom: 5px; color: #aaa; }
         input, select, textarea { width: 100%; padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s; }
-        input:focus { border-color: #00dbde; box-shadow: 0 0 10px rgba(0, 219, 222, 0.3); }
+        input:focus, select:focus, textarea:focus { border-color: #00dbde; box-shadow: 0 0 10px rgba(0, 219, 222, 0.3); }
         
         .btn { width: 100%; padding: 12px; border-radius: 10px; border: none; background: linear-gradient(45deg, #00dbde, #fc00ff); color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,219,222,0.4); margin-top: 10px; }
         .btn:hover { opacity: 0.9; transform: translateY(-2px); }
@@ -41,19 +42,21 @@
         
         .error { color: #ff4757; text-align: center; margin-bottom: 15px; font-size: 0.9rem; }
         .lang-content-hi { display: none; }
+        
+        .client-list-item { background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">⚡ Z3NITH OWO PRO</div>
-        <button class="menu-btn" onclick="toggleDrawer()">☰</button>
+        <div class="logo"><i class="fa-solid fa-bolt"></i> Z3NITH OWO PRO</div>
+        <button class="menu-btn" onclick="toggleDrawer()"><i class="fa-solid fa-bars"></i></button>
     </nav>
 
     <div id="sideDrawer" class="drawer">
         <div class="drawer-header">
             <h3>Menu</h3>
-            <button class="close-btn" onclick="toggleDrawer()">✕</button>
+            <button class="close-btn" onclick="toggleDrawer()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         
         <div class="input-group">
@@ -78,8 +81,8 @@
         
         <div>
             <h4 style="color: #00dbde; margin-bottom: 8px;">Tutorial / ट्यूटोरियल</h4>
-            <p class="lang-content-en" style="font-size: 0.85rem; color: #ccc;">1. Login with username (flashy) & password.<br>2. Set Server & Channel IDs.<br>3. Choose Key mode.<br>4. Auto-bot runs with anti-overlap safety.</p>
-            <p class="lang-content-hi" style="font-size: 0.85rem; color: #ccc;">1. अपने यूजरनेम (flashy) और पासवर्ड से लॉगिन करें।<br>2. सर्वर और चैनल आईडी सेट करें।<br>3. की मोड चुनें।<br>4. बॉट ऑटोमैटिक रन होगा।</p>
+            <p class="lang-content-en" style="font-size: 0.85rem; color: #ccc;">1. Login securely with username & password.<br>2. Configure Server ID, OwO Channel ID, UID & Amount.<br>3. Choose Key Mode (Owner Key / Client Key / Manually).<br>4. Automated commands (`owo`, `daily`, `h`, `b`, `team`, `pray`, hourly `sell all`) run seamlessly with anti-overlap safety.</p>
+            <p class="lang-content-hi" style="font-size: 0.85rem; color: #ccc;">1. अपने यूजरनेम और पासवर्ड से लॉगिन करें।<br>2. सर्वर आईडी, चैनल आईडी और यूआईडी सेट करें।<br>3. की मोड चुनें।<br>4. बॉट एंटी-ओवरलैप सेफ्टी के साथ ऑटोमैटिक रन होगा।</p>
         </div>
         
         {% if session_user %}
@@ -130,7 +133,7 @@
                 </div>
             </div>
 
-            <h3 style="margin-top: 15px; font-size: 1rem; color: #00dbde;">Add New Client</h3>
+            <h3 style="margin-top: 15px; font-size: 1rem; color: #00dbde;">Add New Client Account</h3>
             <div class="input-group" style="margin-top: 10px;">
                 <input type="text" id="newClientUser" placeholder="Client Username">
             </div>
@@ -138,6 +141,21 @@
                 <input type="text" id="newClientPass" placeholder="Client Password">
             </div>
             <button class="btn" onclick="addClient()">Create Client Account</button>
+
+            <h3 style="margin-top: 20px; font-size: 1rem; color: #00dbde;">Manage Clients</h3>
+            <div style="max-height: 150px; overflow-y: auto; margin-top: 10px;">
+                {% for c_user, c_info in data.clients.items() %}
+                <div class="client-list-item">
+                    <span><strong>{{ c_user }}</strong> ({{ 'Active' if c_info.active else 'Disabled' }})</span>
+                    <div>
+                        <button onclick="toggleClient('{{ c_user }}')" style="background:#00dbde; border:none; padding:5px 10px; border-radius:5px; cursor:pointer; color:#000; font-size:0.75rem;">Toggle</button>
+                        <button onclick="deleteClient('{{ c_user }}')" style="background:#ff4757; border:none; padding:5px 10px; border-radius:5px; cursor:pointer; color:#fff; font-size:0.75rem;">Delete</button>
+                    </div>
+                </div>
+                {% else %}
+                <p style="text-align: center; color: #888; font-size: 0.85rem;">No clients added yet.</p>
+                {% endfor %}
+            </div>
 
             <h3 style="margin-top: 20px; font-size: 1rem; color: #00dbde;">Broadcast Announcement</h3>
             <div class="input-group" style="margin-top: 10px;">
@@ -152,13 +170,13 @@
             </div>
             
             <div class="input-group">
-                <label>Key Mode (Owner Key / Client Key / Manually)</label>
+                <label>Key Mode Selection</label>
                 <select id="keyMode" onchange="saveSettings()">
                     <option value="manually" {% if client.mode == 'manually' %}selected{% endif %}>Manually</option>
                     <option value="owner_key" {% if client.mode == 'owner_key' %}selected{% endif %}>Owner Key (Activated)</option>
                     <option value="client_key" {% if client.mode == 'client_key' %}selected{% endif %}>Client Key (Private)</option>
                 </select>
-                <small style="color: #888; font-size: 0.75rem;">*Owner key is managed by owner. No one can see your private client key.</small>
+                <small style="color: #888; font-size: 0.75rem;">*Owner key is managed by owner. Client key is private: "No one can see your key".</small>
             </div>
 
             <div class="input-group">
@@ -211,6 +229,19 @@
             }).then(res => res.json()).then(data => {
                 if(data.success) location.reload();
                 else alert('Error creating client');
+            });
+        }
+
+        function toggleClient(username) {
+            fetch('/api/owner/toggle_client/' + username, {method: 'POST'}).then(res => res.json()).then(data => {
+                if(data.success) location.reload();
+            });
+        }
+
+        function deleteClient(username) {
+            if(!confirm('Are you sure you want to delete this client?')) return;
+            fetch('/api/owner/delete_client/' + username, {method: 'POST'}).then(res => res.json()).then(data => {
+                if(data.success) location.reload();
             });
         }
 
