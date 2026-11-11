@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Z3NITH AUTO OWO CENTER - Advanced Command Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-card { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .neon-glow { box-shadow: 0 0 25px -5px rgba(99, 102, 241, 0.3); }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-indigo-500 selection:text-white">
+
+    <!-- Admin Password Gate Modal -->
+    <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-xl transition-all duration-300">
+        <div class="glass-card p-8 rounded-2xl w-full max-w-md mx-4 neon-glow border border-indigo-500/20">
+            <div class="text-center mb-6">
+                <div class="inline-flex p-3 rounded-2xl bg-indigo-600/20 text-indigo-400 mb-3 border border-indigo-500/30">
+                    <i class="fa-solid fa-shield-halved text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold tracking-tight text-white">Admin Authentication</h2>
+                <p class="text-xs text-slate-400 mt-1">Enter master password to access Z3NITH Command Center</p>
+            </div>
+            <form onsubmit="verifyAdmin(event)" class="space-y-4">
+                <div>
+                    <input type="password" id="admin-password" placeholder="Enter password..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-indigo-500 text-center tracking-widest font-mono">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-indigo-600/30 text-sm">
+                    Authorize Access
+                </button>
+            </form>
+            <p id="auth-error" class="text-rose-400 text-xs text-center mt-3 hidden">Incorrect master password. Access denied.</p>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <div id="dashboard-app" class="opacity-0 pointer-events-none transition-opacity duration-500">
+        <header class="glass-card sticky top-0 z-40 border-b border-slate-800/80 px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-indigo-600 to-purple-600 p-2.5 rounded-xl text-white font-bold shadow-lg shadow-indigo-500/20">
+                    <i class="fa-solid fa-terminal"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-extrabold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">Z3NITH AUTO OWO CENTER</h1>
+                    <p class="text-[11px] text-slate-400">Advanced Multi-Token Farming Suite & Auto-Filter Engine</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="flex items-center text-emerald-400 text-xs bg-emerald-950/60 px-3 py-1.5 rounded-full border border-emerald-800/50">
+                    <span class="w-2 h-2 bg-emerald-400 rounded-full animate-ping mr-2"></span> Secure Gateway Active
+                </span>
+                <button onclick="lockAdmin()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-300 transition flex items-center">
+                    <i class="fa-solid fa-lock mr-1.5 text-indigo-400"></i> Lock Panel
+                </button>
+            </div>
+        </header>
+
+        <main class="p-6 max-w-7xl mx-auto space-y-6">
+            <!-- Metrics Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass-card p-5 rounded-2xl relative overflow-hidden group">
+                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider">Total Loaded Tokens</p>
+                    <h3 class="text-3xl font-extrabold mt-2 text-white" id="stat-total">0</h3>
+                </div>
+                <div class="glass-card p-5 rounded-2xl relative overflow-hidden group">
+                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider">Valid / Active</p>
+                    <h3 class="text-3xl font-extrabold mt-2 text-emerald-400" id="stat-valid">0</h3>
+                </div>
+                <div class="glass-card p-5 rounded-2xl relative overflow-hidden group">
+                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider">Invalid / Banned</p>
+                    <h3 class="text-3xl font-extrabold mt-2 text-rose-400" id="stat-invalid">0</h3>
+                </div>
+                <div class="glass-card p-5 rounded-2xl relative overflow-hidden group">
+                    <p class="text-slate-400 text-xs uppercase font-semibold tracking-wider">Captchas Bypassed</p>
+                    <h3 class="text-3xl font-extrabold mt-2 text-amber-400" id="stat-captchas">0</h3>
+                </div>
+            </div>
+
+            <!-- Token Input & Mode Selector -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="glass-card p-6 rounded-2xl space-y-4 lg:col-span-2">
+                    <h2 class="font-bold text-base flex items-center text-indigo-300">
+                        <i class="fa-solid fa-file-import mr-2"></i> Token Source Manager (TXT / Manual)
+                    </h2>
+                    <p class="text-xs text-slate-400">Paste tokens line-by-line or load your tokens.txt file.</p>
+                    
+                    <div class="space-y-3">
+                        <textarea id="tokens-input" rows="5" placeholder="Paste Discord tokens here (one per line)..." class="w-full bg-slate-900 border border-slate-800 rounded-xl p-4 text-xs font-mono focus:outline-none focus:border-indigo-500 text-slate-200 resize-none"></textarea>
+                        
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex items-center space-x-2">
+                                <label class="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition flex items-center">
+                                    <i class="fa-solid fa-folder-open mr-2 text-indigo-400"></i> Load tokens.txt
+                                    <input type="file" id="file-selector" accept=".txt" class="hidden" onchange="handleFileSelect(event)">
+                                </label>
+                                <button onclick="saveTokensToBackend()" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-xl text-xs font-semibold transition shadow-lg shadow-indigo-600/20">
+                                    Sync Tokens
+                                </button>
+                            </div>
+                            <span id="sync-status" class="text-xs text-slate-400 font-mono"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl space-y-4">
+                    <h2 class="font-bold text-base flex items-center text-purple-300">
+                        <i class="fa-solid fa-sliders mr-2"></i> Captcha Protection Mode
+                    </h2>
+                    <p class="text-xs text-slate-400">Choose bot reaction on verification prompt.</p>
+
+                    <div class="space-y-3 pt-2">
+                        <label class="flex items-start space-x-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800 cursor-pointer hover:border-indigo-500/50 transition">
+                            <input type="radio" name="captcha_mode" value="with_key" checked class="mt-1 text-indigo-600">
+                            <div>
+                                <span class="text-xs font-bold text-white block">With Cap Key (Auto-Solve)</span>
+                                <span class="text-[11px] text-slate-400 block">Routes captchas to 2Captcha API.</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start space-x-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800 cursor-pointer hover:border-indigo-500/50 transition">
+                            <input type="radio" name="captcha_mode" value="without_key" class="mt-1 text-indigo-600">
+                            <div>
+                                <span class="text-xs font-bold text-white block">Without Key (Auto-Stop)</span>
+                                <span class="text-[11px] text-slate-400 block">Pauses account execution on verify prompt.</span>
+                            </div>
+                        </label>
+
+                        <div class="pt-1">
+                            <input type="password" id="cap-key-input" placeholder="Enter 2Captcha API Key..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-indigo-500 text-slate-200 font-mono">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Token Table -->
+            <div class="glass-card rounded-2xl overflow-hidden shadow-xl">
+                <div class="px-6 py-4 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
+                    <h2 class="font-bold text-sm text-white flex items-center">
+                        <i class="fa-solid fa-network-wired mr-2 text-emerald-400"></i> Active Token Registry & Auto-Sorter
+                    </h2>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="startFarmingEngine()" class="bg-emerald-600 hover:bg-emerald-500 px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center"><i class="fa-solid fa-play mr-2"></i> Start Farm</button>
+                        <button onclick="stopFarmingEngine()" class="bg-rose-600 hover:bg-rose-500 px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center"><i class="fa-solid fa-stop mr-2"></i> Stop Farm</button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-950/60 text-slate-400 text-[11px] uppercase tracking-wider border-b border-slate-800">
+                                <th class="px-6 py-3.5">Token Mask</th>
+                                <th class="px-6 py-3.5">Status Filter</th>
+                                <th class="px-6 py-3.5">Current Task</th>
+                                <th class="px-6 py-3.5">OwO Balance</th>
+                                <th class="px-6 py-3.5 text-right">File Output</th>
+                            </tr>
+                        </thead>
+                        <tbody id="token-table-body" class="divide-y divide-slate-800/60 text-xs">
+                            <tr><td colspan="5" class="px-6 py-8 text-center text-slate-500 font-mono">No tokens loaded yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Terminal -->
+            <div class="glass-card rounded-2xl p-6 shadow-xl">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="font-bold text-xs text-slate-400 uppercase tracking-wider"><i class="fa-solid fa-terminal mr-2 text-indigo-400"></i> Live Console</h2>
+                    <button onclick="clearTerminal()" class="text-xs text-slate-500 hover:text-slate-300">Clear</button>
+                </div>
+                <div id="terminal-console" class="bg-slate-950 font-mono text-[11px] text-emerald-400 p-4 rounded-xl h-48 overflow-y-auto space-y-1.5 border border-slate-900">
+                    <div>[02:47:00] [Z3NITH Core] Panel ready. Enter master password to proceed.</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function verifyAdmin(e) {
+            e.preventDefault();
+            if (document.getElementById('admin-password').value === 'zidan2919k') {
+                document.getElementById('auth-modal').classList.add('opacity-0', 'pointer-events-none');
+                document.getElementById('dashboard-app').classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                document.getElementById('auth-error').classList.remove('hidden');
+            }
+        }
+        function lockAdmin() {
+            document.getElementById('auth-modal').classList.remove('opacity-0', 'pointer-events-none');
+            document.getElementById('dashboard-app').classList.add('opacity-0', 'pointer-events-none');
+            document.getElementById('admin-password').value = '';
+        }
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const r = new FileReader();
+            r.onload = function(evt) {
+                document.getElementById('tokens-input').value = evt.target.result;
+                saveTokensToBackend();
+            };
+            r.readAsText(file);
+        }
+        function saveTokensToBackend() {
+            const raw = document.getElementById('tokens-input').value.trim();
+            if (!raw) return alert('Paste tokens first.');
+            const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 10);
+            fetch('/api/tokens/sync', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tokens: lines })
+            })
+            .then(res => res.json())
+            .then(data => {
+                updateStats(data.stats);
+                renderTable(data.tokens);
+                document.getElementById('sync-status').innerText = `Synced ${data.tokens.length} tokens!`;
+            });
+        }
+        function updateStats(st) {
+            document.getElementById('stat-total').innerText = st.total;
+            document.getElementById('stat-valid').innerText = st.valid;
+            document.getElementById('stat-invalid').innerText = st.invalid;
+            document.getElementById('stat-captchas').innerText = st.captchas_solved;
+        }
+        function renderTable(tokens) {
+            const tbody = document.getElementById('token-table-body');
+            tbody.innerHTML = '';
+            tokens.forEach(t => {
+                const badge = t.status === 'Valid' ? '<span class="text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">VALID</span>' : '<span class="text-rose-400 bg-rose-950 px-2 py-0.5 rounded border border-rose-800">INVALID</span>';
+                tbody.innerHTML += `<tr class="hover:bg-slate-900/50"><td class="px-6 py-3 font-mono text-slate-300">${t.masked}</td><td class="px-6 py-3">${badge}</td><td class="px-6 py-3 text-slate-400 font-mono">${t.task}</td><td class="px-6 py-3 font-bold text-emerald-400">${t.balance}</td><td class="px-6 py-3 text-right font-mono text-indigo-300">${t.output_file}</td></tr>`;
+            });
+        }
+        function startFarmingEngine() {
+            const mode = document.querySelector('input[name="captcha_mode"]:checked').value;
+            fetch('/api/farm/start', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({mode}) }).then(res => res.json()).then(d => alert(d.message));
+        }
+        function stopFarmingEngine() {
+            fetch('/api/farm/stop', { method: 'POST' }).then(res => res.json()).then(d => alert(d.message));
+        }
+        function clearTerminal() {
+            document.getElementById('terminal-console').innerHTML = '<div>[System] Cleared.</div>';
+        }
+    </script>
+</body>
+</html>
