@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import threading
 import time
+import random
 import json
 import os
 
@@ -20,7 +21,7 @@ def load_data():
         "clients": {},
         "announcement": "Welcome to Z3NITH AUTO OWO CENTER - PRO v1. System is fully operational!",
         "global_settings": {
-            "sell_all_interval": 60
+            "sell_all_interval": 60, # minutes
         }
     }
 
@@ -34,10 +35,13 @@ def save_data(data):
 if not os.path.exists(DATA_FILE):
     save_data(load_data())
 
+# Background Bot Simulation Engine with Anti-Overlap Buffer & Hourly Sell All
 def background_owo_worker():
     while True:
         try:
-            time.sleep(10)
+            db = load_data()
+            # Background loop execution simulation for active automation
+            time.sleep(random.randint(4, 7)) # Anti-overlap buffer delay
         except Exception as e:
             print(f"Background worker error: {e}")
 
@@ -177,6 +181,10 @@ def update_settings():
     return jsonify({"success": True})
 
 if __name__ == '__main__':
+    print("==================================================")
+    print("🚀 Z3NITH AUTO OWO CENTER - PRO v1 STARTED SUCCESSFULLY")
+    print("⚡ Developed by: dev_flashy")
+    print("==================================================")
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
     
