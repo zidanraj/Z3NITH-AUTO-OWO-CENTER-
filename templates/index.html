@@ -3,59 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Z3NITH AUTO OWO CENTER - PRO</title>
+    <title>Z3NITH AUTO QUEST PANEL - V1</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-        body { background: radial-gradient(circle at center, #1a1c29 0%, #0d0e15 100%); color: #fff; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        body { background: radial-gradient(circle at center, #151828 0%, #0a0b10 100%); color: #fff; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
         
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: sticky; top: 0; z-index: 1000; }
-        .logo { font-weight: 700; font-size: 1.2rem; background: linear-gradient(45deg, #00dbde, #fc00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-weight: 700; font-size: 1.3rem; background: linear-gradient(45deg, #00dbde, #fc00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 10px; }
         
-        .menu-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 8px; cursor: pointer; color: #fff; font-size: 1.2rem; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .nav-right { display: flex; gap: 15px; align-items: center; }
+        .discord-badge { background: #5865F2; color: #fff; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; transition: 0.3s; box-shadow: 0 4px 15px rgba(88,101,242,0.4); }
+        .discord-badge:hover { transform: translateY(-2px); opacity: 0.9; }
+        
+        .menu-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 8px 12px; border-radius: 8px; cursor: pointer; color: #fff; font-size: 1.2rem; transition: 0.3s; }
         .menu-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
         
-        .drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: rgba(13, 14, 21, 0.95); backdrop-filter: blur(20px); border-left: 1px solid rgba(255,255,255,0.1); z-index: 2000; transition: 0.4s cubic-bezier(0.77,0,0.175,1); padding: 25px; display: flex; flex-direction: column; gap: 20px; box-shadow: -10px 0 30px rgba(0,0,0,0.8); overflow-y: auto; }
+        .drawer { position: fixed; top: 0; right: -350px; width: 320px; height: 100%; background: rgba(13, 14, 21, 0.98); backdrop-filter: blur(25px); border-left: 1px solid rgba(255,255,255,0.1); z-index: 2000; transition: 0.4s cubic-bezier(0.77,0,0.175,1); padding: 25px; display: flex; flex-direction: column; gap: 20px; box-shadow: -15px 0 40px rgba(0,0,0,0.8); overflow-y: auto; }
         .drawer.open { right: 0; }
         .drawer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
         .close-btn { background: none; border: none; color: #ff4757; font-size: 1.5rem; cursor: pointer; }
         
-        .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .glass-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); border-radius: 20px; padding: 30px; width: 100%; max-width: 550px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); transform-style: preserve-3d; transition: 0.3s; }
+        .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 30px 15px; }
+        .glass-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border-radius: 24px; padding: 35px; width: 100%; max-width: 650px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); transform-style: preserve-3d; transition: 0.3s; }
         
-        h2 { margin-bottom: 20px; font-weight: 600; text-align: center; font-size: 1.4rem; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 0.85rem; margin-bottom: 5px; color: #aaa; }
-        input, select, textarea { width: 100%; padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s; }
-        input:focus, select:focus, textarea:focus { border-color: #00dbde; box-shadow: 0 0 10px rgba(0, 219, 222, 0.3); }
+        h2 { margin-bottom: 20px; font-weight: 600; text-align: center; font-size: 1.5rem; }
+        .input-group { margin-bottom: 18px; }
+        label { display: block; font-size: 0.85rem; margin-bottom: 6px; color: #aaa; font-weight: 500; }
+        input, select, textarea { width: 100%; padding: 12px 15px; border-radius: 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 0.95rem; outline: none; transition: 0.3s; }
+        input:focus, select:focus, textarea:focus { border-color: #00dbde; box-shadow: 0 0 12px rgba(0, 219, 222, 0.3); }
         
-        .btn { width: 100%; padding: 12px; border-radius: 10px; border: none; background: linear-gradient(45deg, #00dbde, #fc00ff); color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,219,222,0.4); margin-top: 10px; }
+        .btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: linear-gradient(45deg, #00dbde, #fc00ff); color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 6px 20px rgba(0,219,222,0.3); margin-top: 10px; font-size: 0.95rem; }
         .btn:hover { opacity: 0.9; transform: translateY(-2px); }
         
-        .announcement-box { background: rgba(252, 0, 255, 0.1); border-left: 4px solid #fc00ff; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; }
+        .btn-secondary { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); box-shadow: none; }
+        .btn-danger { background: linear-gradient(45deg, #ff4757, #ff6b81); box-shadow: 0 6px 20px rgba(255,71,87,0.3); }
         
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
-        .stat-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
-        .stat-box h3 { font-size: 1.2rem; color: #00dbde; }
-        .stat-box p { font-size: 0.8rem; color: #aaa; }
+        .announcement-box { background: rgba(252, 0, 255, 0.08); border-left: 4px solid #fc00ff; padding: 15px; border-radius: 12px; margin-bottom: 25px; font-size: 0.9rem; border: 1px solid rgba(252,0,255,0.15); }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+        .stat-box { background: rgba(255,255,255,0.04); padding: 15px; border-radius: 14px; text-align: center; border: 1px solid rgba(255,255,255,0.06); }
+        .stat-box h3 { font-size: 1.3rem; color: #00dbde; font-weight: 700; }
+        .stat-box p { font-size: 0.75rem; color: #aaa; margin-top: 4px; }
         
         .error { color: #ff4757; text-align: center; margin-bottom: 15px; font-size: 0.9rem; }
+        .success { color: #2ed573; text-align: center; margin-bottom: 15px; font-size: 0.9rem; }
         .lang-content-hi { display: none; }
         
-        .client-list-item { background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
+        .client-card-item { background: rgba(255,255,255,0.04); padding: 12px 18px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.06); }
+        .key-badge { background: rgba(0,219,222,0.15); color: #00dbde; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: inline-block; margin-bottom: 15px; border: 1px solid rgba(0,219,222,0.3); }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo"><i class="fa-solid fa-bolt"></i> Z3NITH OWO PRO</div>
-        <button class="menu-btn" onclick="toggleDrawer()"><i class="fa-solid fa-bars"></i></button>
+        <div class="logo"><i class="fa-solid fa-cube"></i> Z3NITH QUEST V1</div>
+        <div class="nav-right">
+            <a href="https://discord.gg/pJxRn2MkB" target="_blank" class="discord-badge"><i class="fa-brands fa-discord"></i> Discord</a>
+            <button class="menu-btn" onclick="toggleDrawer()"><i class="fa-solid fa-bars"></i></button>
+        </div>
     </nav>
 
     <div id="sideDrawer" class="drawer">
         <div class="drawer-header">
-            <h3>Menu</h3>
+            <h3>Menu & Tutorial</h3>
             <button class="close-btn" onclick="toggleDrawer()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         
@@ -70,8 +82,8 @@
         <hr style="border-color: rgba(255,255,255,0.1);">
         
         <div>
-            <h4 style="color: #00dbde; margin-bottom: 8px;">Version</h4>
-            <p style="font-size: 0.9rem;">v1.0.0 PRO Stable</p>
+            <h4 style="color: #00dbde; margin-bottom: 8px;">Project & Version</h4>
+            <p style="font-size: 0.9rem;">Z3NITH AUTO QUEST PANEL V1</p>
         </div>
         
         <div>
@@ -81,12 +93,12 @@
         
         <div>
             <h4 style="color: #00dbde; margin-bottom: 8px;">Tutorial / ट्यूटोरियल</h4>
-            <p class="lang-content-en" style="font-size: 0.85rem; color: #ccc;">1. Login securely with username & password.<br>2. Configure Server ID, OwO Channel ID, UID & Amount.<br>3. Choose Key Mode (Owner Key / Client Key / Manually).<br>4. Automated commands (`owo`, `daily`, `h`, `b`, `team`, `pray`, hourly `sell all`) run seamlessly with anti-overlap safety.</p>
-            <p class="lang-content-hi" style="font-size: 0.85rem; color: #ccc;">1. अपने यूजरनेम और पासवर्ड से लॉगिन करें।<br>2. सर्वर आईडी, चैनल आईडी और यूआईडी सेट करें।<br>3. की मोड चुनें।<br>4. बॉट एंटी-ओवरलैप सेफ्टी के साथ ऑटोमैटिक रन होगा।</p>
+            <p class="lang-content-en" style="font-size: 0.85rem; color: #ccc; line-height: 1.5;">1. Login securely with your credentials.<br>2. Go to Token Management to add tokens (TXT or manual).<br>3. Set Duration, Server ID & Channel ID in Setup.<br>4. Choose Key Mode (Manually, Owner Key, Client Key).<br>5. Start automation engine. OwO commands & hourly sell all run automatically!</p>
+            <p class="lang-content-hi" style="font-size: 0.85rem; color: #ccc; line-height: 1.5;">1. अपने क्रेडेंशियल्स से लॉगिन करें।<br>2. टोकन मैनेजमेंट में टोकन जोड़ें।<br>3. सेटअप में ड्यूरेशन, सर्वर और चैनल आईडी सेट करें।<br>4. की मोड चुनें।<br>5. बॉट स्टार्ट करें, OwO कमांड्स और सेल ऑल ऑटोमैटिक चलेंगे!</p>
         </div>
         
         {% if session_user %}
-        <a href="/logout" class="btn" style="text-align: center; text-decoration: none; background: #ff4757; margin-top: auto;">Logout</a>
+        <a href="/logout" class="btn btn-danger" style="text-align: center; text-decoration: none; margin-top: auto;">Logout</a>
         {% endif %}
     </div>
 
@@ -94,8 +106,8 @@
         <div class="glass-card">
             
             {% if not session_user %}
-            <h2 class="lang-content-en">Z3NITH OWO PANEL LOGIN</h2>
-            <h2 class="lang-content-hi">ज़ेंनिथ ओवो पैनल लॉगिन</h2>
+            <h2 class="lang-content-en">Z3NITH AUTO QUEST PANEL</h2>
+            <h2 class="lang-content-hi">ज़ेंनिथ ऑटो क्वेस्ट पैनल</h2>
             
             {% if error %}
             <div class="error">{{ error }}</div>
@@ -119,7 +131,7 @@
             {% elif role == 'owner' %}
             <h2>👑 Owner Master Dashboard</h2>
             <div class="announcement-box">
-                <strong>Announcement:</strong> {{ data.announcement }}
+                <strong>Announcement:</strong> {{ data.announcement.text }}
             </div>
             
             <div class="stats-grid">
@@ -128,76 +140,137 @@
                     <p>Total Clients</p>
                 </div>
                 <div class="stat-box">
+                    <h3>{{ data.global_settings.sell_all_interval }}m</h3>
+                    <p>Sell All Interval</p>
+                </div>
+                <div class="stat-box">
                     <h3>Active</h3>
                     <p>System Status</p>
                 </div>
             </div>
 
-            <h3 style="margin-top: 15px; font-size: 1rem; color: #00dbde;">Add New Client Account</h3>
+            <h3 style="margin-top: 20px; font-size: 1rem; color: #00dbde;">Create Client Account</h3>
             <div class="input-group" style="margin-top: 10px;">
                 <input type="text" id="newClientUser" placeholder="Client Username">
             </div>
             <div class="input-group">
-                <input type="text" id="newClientPass" placeholder="Client Password">
+                <input type="password" id="newClientPass" placeholder="Client Password">
             </div>
-            <button class="btn" onclick="addClient()">Create Client Account</button>
+            <button class="btn" onclick="addClient()">Create Client</button>
 
-            <h3 style="margin-top: 20px; font-size: 1rem; color: #00dbde;">Manage Clients</h3>
-            <div style="max-height: 150px; overflow-y: auto; margin-top: 10px;">
+            <h3 style="margin-top: 25px; font-size: 1rem; color: #00dbde;">Client Key Access Control</h3>
+            <div style="max-height: 180px; overflow-y: auto; margin-top: 10px;">
                 {% for c_user, c_info in data.clients.items() %}
-                <div class="client-list-item">
-                    <span><strong>{{ c_user }}</strong> ({{ 'Active' if c_info.active else 'Disabled' }})</span>
+                <div class="client-card-item">
                     <div>
-                        <button onclick="toggleClient('{{ c_user }}')" style="background:#00dbde; border:none; padding:5px 10px; border-radius:5px; cursor:pointer; color:#000; font-size:0.75rem;">Toggle</button>
-                        <button onclick="deleteClient('{{ c_user }}')" style="background:#ff4757; border:none; padding:5px 10px; border-radius:5px; cursor:pointer; color:#fff; font-size:0.75rem;">Delete</button>
+                        <strong>{{ c_user }}</strong><br>
+                        <small style="color: #aaa;">Key Mode: {{ c_info.key_mode }} | Access: {{ 'Granted' if c_info.owner_key_granted else 'Revoked' }}</small>
+                    </div>
+                    <div>
+                        {% if not c_info.owner_key_granted %}
+                        <button onclick="grantKey('{{ c_user }}')" style="background:#2ed573; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; color:#fff; font-size:0.75rem; font-weight:600;">Grant Key</button>
+                        {% else %}
+                        <button onclick="revokeKey('{{ c_user }}')" style="background:#ff4757; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; color:#fff; font-size:0.75rem; font-weight:600;">Revoke Key</button>
+                        {% endif %}
+                        <button onclick="deleteClient('{{ c_user }}')" style="background:rgba(255,255,255,0.1); border:none; padding:6px 12px; border-radius:6px; cursor:pointer; color:#fff; font-size:0.75rem;">Delete</button>
                     </div>
                 </div>
                 {% else %}
-                <p style="text-align: center; color: #888; font-size: 0.85rem;">No clients added yet.</p>
+                <p style="text-align: center; color: #888; font-size: 0.85rem;">No clients created yet.</p>
                 {% endfor %}
             </div>
 
-            <h3 style="margin-top: 20px; font-size: 1rem; color: #00dbde;">Broadcast Announcement</h3>
+            <h3 style="margin-top: 25px; font-size: 1rem; color: #00dbde;">Global Settings & Sell All Interval</h3>
             <div class="input-group" style="margin-top: 10px;">
-                <textarea id="announcementText" rows="2">{{ data.announcement }}</textarea>
+                <label>Sell All Interval (Minutes - Default 60)</label>
+                <input type="number" id="sellInterval" value="{{ data.global_settings.sell_all_interval }}">
             </div>
-            <button class="btn" onclick="updateAnnouncement()">Update Announcement</button>
+            <button class="btn" onclick="updateGlobalSettings()">Save Global Settings</button>
+
+            <h3 style="margin-top: 25px; font-size: 1rem; color: #00dbde;">Broadcast Announcement</h3>
+            <div class="input-group" style="margin-top: 10px;">
+                <textarea id="announcementText" rows="3" placeholder="Write announcement...">{{ data.announcement.text }}</textarea>
+            </div>
+            <button class="btn" onclick="updateAnnouncement()">Send Broadcast Announcement</button>
 
             {% else %}
             <h2>⚡ Client Dashboard ({{ username }})</h2>
+            <div class="key-badge">Current Key Mode: {{ client.key_mode | upper }}</div>
+            
             <div class="announcement-box">
-                <strong>Notice from Owner:</strong> {{ data.announcement }}
+                <strong>Notice from Owner:</strong> {{ data.announcement.text }}
             </div>
             
-            <div class="input-group">
-                <label>Key Mode Selection</label>
-                <select id="keyMode" onchange="saveSettings()">
-                    <option value="manually" {% if client.mode == 'manually' %}selected{% endif %}>Manually</option>
-                    <option value="owner_key" {% if client.mode == 'owner_key' %}selected{% endif %}>Owner Key (Activated)</option>
-                    <option value="client_key" {% if client.mode == 'client_key' %}selected{% endif %}>Client Key (Private)</option>
-                </select>
-                <small style="color: #888; font-size: 0.75rem;">*Owner key is managed by owner. Client key is private: "No one can see your key".</small>
-            </div>
-
-            <div class="input-group">
-                <label>Server ID</label>
-                <input type="text" id="serverId" value="{{ client.server_id }}" placeholder="Enter Server ID">
-            </div>
-
-            <div class="input-group">
-                <label>OwO Channel ID</label>
-                <input type="text" id="owoChannelId" value="{{ client.owo_channel_id }}" placeholder="Enter Channel ID">
-            </div>
-
-            <div class="input-group">
-                <label>Give Owner UID & Amount</label>
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" id="giveOwnerUid" value="{{ client.give_owner_uid }}" placeholder="Owner UID">
-                    <input type="number" id="amount" value="{{ client.amount }}" placeholder="Amount">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h3>{{ client.analytics.valid }}</h3>
+                    <p>Valid Tokens</p>
+                </div>
+                <div class="stat-box">
+                    <h3>{{ client.analytics.live }}</h3>
+                    <p>Live Tokens</p>
+                </div>
+                <div class="stat-box">
+                    <h3>{{ client.analytics.working }}</h3>
+                    <p>Working</p>
                 </div>
             </div>
 
-            <button class="btn" onclick="saveSettings()">Save & Apply Settings</button>
+            <div class="input-group">
+                <label>Key Management (Manually / Owner Key / Client Key)</label>
+                <select id="keyMode" onchange="saveClientSettings()">
+                    <option value="manually" {% if client.key_mode == 'manually' %}selected{% endif %}>Manually</option>
+                    <option value="owner_key" {% if client.key_mode == 'owner_key' %}selected{% endif %}>Owner Key</option>
+                    <option value="client_key" {% if client.key_mode == 'client_key' %}selected{% endif %}>Client Key</option>
+                </select>
+                <small style="color: #aaa; font-size: 0.75rem; display:block; margin-top:5px;">*Note: Switching to Manual stops generation. Owner Key requires permission.</small>
+            </div>
+
+            <div class="input-group" id="clientKeyGroup" style="display: {% if client.key_mode == 'client_key' %}block{% endif %}none;">
+                <label>Client Private Key</label>
+                <input type="text" id="clientKeyVal" value="{{ client.client_key }}" placeholder="Enter your private key">
+                <small style="color: #00dbde; font-size: 0.75rem; display:block; margin-top:4px;">🔒 "No one can access this CLIENT KEY, not even the owner."</small>
+            </div>
+
+            <div class="input-group">
+                <label>Token Management (Paste tokens or TXT bulk)</label>
+                <textarea id="tokenInput" rows="3" placeholder="Paste tokens line by line..."></textarea>
+                <div style="display: flex; gap: 10px; margin-top: 8px;">
+                    <button class="btn" style="margin-top:0;" onclick="addTokens('bulk')">Add TXT / Bulk</button>
+                    <button class="btn btn-secondary" style="margin-top:0;" onclick="viewTokens()">View Tokens ({{ client.tokens|length }})</button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Setup: Server ID & OwO Channel ID</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="serverId" value="{{ client.server_id }}" placeholder="Server ID">
+                    <input type="text" id="channelId" value="{{ client.owo_channel_id }}" placeholder="Channel ID">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Startup Controls: Give Owner UID & Amount</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="giveUid" value="{{ client.give_owner_uid }}" placeholder="Owner UID">
+                    <input type="number" id="giveAmount" value="{{ client.amount }}" placeholder="Amount">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Duration Configuration (Minutes)</label>
+                <input type="number" id="durationVal" value="{{ client.duration }}" placeholder="Duration">
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="btn" style="margin-top:0; background: linear-gradient(45deg, #2ed573, #26af5f);" onclick="runStartup('start')">START</button>
+                <button class="btn btn-danger" style="margin-top:0;" onclick="runStartup('off')">OFF</button>
+                <button class="btn btn-secondary" style="margin-top:0;" onclick="runStartup('give')">GIVE</button>
+            </div>
+            
+            <div id="statusIndicator" style="margin-top: 15px; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.3); text-align: center; font-size: 0.85rem; color: #00dbde;">
+                Status: {{ client.status }}
+            </div>
             {% endif %}
 
         </div>
@@ -218,6 +291,17 @@
             }
         }
 
+        // Key mode visibility toggle
+        document.getElementById('keyMode')?.addEventListener('change', function() {
+            let val = this.value;
+            let keyGroup = document.getElementById('clientKeyGroup');
+            if(val === 'client_key') {
+                keyGroup.style.display = 'block';
+            } else {
+                keyGroup.style.display = 'none';
+            }
+        });
+
         function addClient() {
             let u = document.getElementById('newClientUser').value;
             let p = document.getElementById('newClientPass').value;
@@ -232,46 +316,17 @@
             });
         }
 
-        function toggleClient(username) {
-            fetch('/api/owner/toggle_client/' + username, {method: 'POST'}).then(res => res.json()).then(data => {
+        function grantKey(username) {
+            fetch('/api/owner/grant_key/' + username, {method: 'POST'}).then(res => res.json()).then(data => {
+                if(data.success) location.reload();
+            });
+        }
+
+        function revokeKey(username) {
+            fetch('/api/owner/revoke_key/' + username, {method: 'POST'}).then(res => res.json()).then(data => {
                 if(data.success) location.reload();
             });
         }
 
         function deleteClient(username) {
-            if(!confirm('Are you sure you want to delete this client?')) return;
-            fetch('/api/owner/delete_client/' + username, {method: 'POST'}).then(res => res.json()).then(data => {
-                if(data.success) location.reload();
-            });
-        }
-
-        function updateAnnouncement() {
-            let txt = document.getElementById('announcementText').value;
-            fetch('/api/owner/update_announcement', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({announcement: txt})
-            }).then(res => res.json()).then(data => {
-                if(data.success) alert('Announcement updated successfully!');
-            });
-        }
-
-        function saveSettings() {
-            let settings = {
-                mode: document.getElementById('keyMode') ? document.getElementById('keyMode').value : 'manually',
-                server_id: document.getElementById('serverId') ? document.getElementById('serverId').value : '',
-                owo_channel_id: document.getElementById('owoChannelId') ? document.getElementById('owoChannelId').value : '',
-                give_owner_uid: document.getElementById('giveOwnerUid') ? document.getElementById('giveOwnerUid').value : '',
-                amount: document.getElementById('amount') ? parseInt(document.getElementById('amount').value || 0) : 0
-            };
-            fetch('/api/update_settings', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({settings: settings})
-            }).then(res => res.json()).then(data => {
-                if(data.success) alert('Settings saved & synced successfully!');
-            });
-        }
-    </script>
-</body>
-</html>
+            if(!confirm('Are you sure you want to delete this client?')) ret
