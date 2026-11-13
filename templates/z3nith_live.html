@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Z3NITH OWO PANEL - Secure Access</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: #0b0f19; color: #fff; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        
+        canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(11, 15, 25, 0.75); backdrop-filter: blur(12px); }
+        .logo { font-size: 1.25rem; font-weight: 700; background: linear-gradient(135deg, #00dbde, #fc00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 8px; }
+        
+        .main-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 30px 15px; }
+        .glass-box { background: rgba(17, 24, 39, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(25px); border-radius: 20px; padding: 35px 30px; width: 100%; max-width: 580px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); }
+        
+        h1, h2 { text-align: center; margin-bottom: 20px; font-weight: 600; }
+        h1 { font-size: 1.5rem; letter-spacing: 1px; color: #f3f4f6; }
+        h2 { font-size: 1.3rem; color: #00dbde; }
+        
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-size: 0.85rem; color: #9ca3af; margin-bottom: 8px; font-weight: 500; }
+        input, textarea { width: 100%; padding: 12px 16px; border-radius: 10px; background: rgba(3, 7, 18, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 0.95rem; outline: none; transition: 0.2s; }
+        input:focus, textarea:focus { border-color: #00dbde; box-shadow: 0 0 0 3px rgba(0, 219, 222, 0.2); }
+        
+        .btn { width: 100%; padding: 12px; border-radius: 10px; border: none; background: linear-gradient(135deg, #00dbde, #fc00ff); color: #fff; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.95rem; display: flex; justify-content: center; align-items: center; gap: 8px; text-decoration: none; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-red { background: linear-gradient(135deg, #ff4757, #ff6b81); }
+        .btn-green { background: linear-gradient(135deg, #2ed573, #26af5f); }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+        @media(min-width: 480px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+        .stat-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 15px 10px; border-radius: 12px; text-align: center; }
+        .stat-card h3 { font-size: 1.2rem; color: #00dbde; }
+        .stat-card p { font-size: 0.75rem; color: #9ca3af; margin-top: 5px; text-transform: uppercase; }
+        
+        .controls-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        
+        .terminal { background: #030712; border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px; height: 130px; overflow-y: auto; font-family: monospace; font-size: 0.8rem; color: #2ed573; margin-bottom: 20px; }
+        .terminal-row { margin-bottom: 4px; word-break: break-all; }
+        
+        .error-msg { color: #ff4757; font-size: 0.85rem; text-align: center; margin-bottom: 15px; }
+        .footer-link { text-align: center; margin-top: 15px; font-size: 0.85rem; color: #6b7280; }
+    </style>
+</head>
+<body>
+
+    <canvas id="netCanvas"></canvas>
+
+    <div class="top-nav">
+        <div class="logo"><i class="fa-solid fa-robot"></i> Z3NITH OWO PANEL</div>
+        {% if view == 'dashboard' %}
+        <a href="/logout" class="btn btn-red" style="width: auto; padding: 8px 16px; font-size: 0.8rem;"><i class="fa-solid fa-lock"></i> Lock Panel</a>
+        {% endif %}
+    </div>
+
+    <div class="main-wrapper">
+        <div class="glass-box">
+            
+            {% if view == 'activate' %}
+            <h1>SECURE ACCESS</h1>
+            <p style="text-align: center; color: #9ca3af; font-size: 0.85rem; margin-bottom: 25px;">Enter your activation key to enter the Z3NITH automation dashboard.</p>
+            
+            {% if error %}
+            <div class="error-msg">{{ error }}</div>
+            {% endif %}
+            
+            <form action="/activate" method="POST">
+                <div class="form-group">
+                    <label>Activation Key</label>
+                    <input type="password" name="key" required placeholder="Enter key...">
+                </div>
+                <button type="submit" class="btn">Proceed <i class="fa-solid fa-arrow-right"></i></button>
+            </form>
+            <div class="footer-link">Demo Key: <b style="color:#fff;">Z3NITH-VIP-2026</b></div>
+
+            {% else %}
+            <h2>⚡ Z3NITH OWO DASHBOARD</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>{{ data.stats.total_tokens }}</h3>
+                    <p>Total Tokens</p>
+                </div>
+                <div class="stat-card">
+                    <h3>{{ data.stats.live_tokens }}</h3>
+                    <p>Live</p>
+                </div>
+                <div class="stat-card">
+                    <h3>{{ data.stats.banned }}</h3>
+                    <p>Banned</p>
+                </div>
+                <div class="stat-card">
+                    <h3>{{ data.stats.total_cowoncy }}</h3>
+                    <p>Cowoncy</p>
+                </div>
+            </div>
+
+            <div class="controls-row">
+                <button class="btn btn-green" onclick="controlBot('start')"><i class="fa-solid fa-play"></i> START</button>
+                <button class="btn btn-red" onclick="controlBot('stop')"><i class="fa-solid fa-stop"></i> STOP</button>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-key"></i> Tokens (Paste one per line)</label>
+                <textarea id="tokenArea" rows="3" placeholder="Paste Discord User Tokens here..."></textarea>
+            </div>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button class="btn" style="flex: 1;" onclick="manageTokens('add')">Save Tokens</button>
+                <button class="btn btn-red" style="flex: 1;" onclick="manageTokens('clear')">Clear All</button>
+            </div>
+
+            <label><i class="fa-solid fa-terminal"></i> Live Activity Logs</label>
+            <div class="terminal">
+                {% for log in data.logs %}
+                <div class="terminal-row">> {{ log }}</div>
+                {% endfor %}
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                <div class="form-group" style="margin:0;">
+                    <label>Server ID</label>
+                    <input type="text" id="serverId" value="{{ data.settings.server_id }}" placeholder="Guild ID">
+                </div>
+                <div class="form-group" style="margin:0;">
+                    <label>Channel ID</label>
+                    <input type="text" id="channelId" value="{{ data.settings.channel_id }}" placeholder="Channel ID">
+                </div>
+            </div>
+            <button class="btn" onclick="saveConfig()">Update Configuration</button>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('netCanvas');
+        const ctx = canvas.getContext('2d');
+        let pts = [];
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
+
+        for(let i=0; i<35; i++) {
+            pts.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4});
+        }
+
+        function drawNet() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(0, 219, 222, 0.4)';
+            pts.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(drawNet);
+        }
+        drawNet();
+
+        function controlBot(action) {
+            fetch('/api/control', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({action: action})
+            }).then(r => r.json()).then(res => {
+                if(res.success) location.reload();
+            });
+        }
+
+        function manageTokens(action) {
+            let tokens = document.getElementById('tokenArea').value;
+            fetch('/api/tokens', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({action: action, tokens: tokens})
+            }).then(r => r.json()).then(res => {
+                if(res.success) {
+                    alert('Token action completed!');
+                    location.reload();
+                }
+            });
+        }
+
+        function saveConfig() {
+            let data = {
+                server_id: document.getElementById('serverId').value,
+                channel_id: document.getElementById('channelId').value
+            };
+            fetch('/api/settings', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            }).then(r => r.json()).then(res => {
+                if(res.success) alert('Configuration saved successfully!');
+            });
+        }
+    </script>
+</body>
+</html>
+
